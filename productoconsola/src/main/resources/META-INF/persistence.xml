@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+             https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+
+    <persistence-unit name="productoPU">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>productoconsola.model.Producto</class>
+        <properties>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://avnadmin:AVNS_V-atWthcTF5fFxg3qZB@polirestaurante-db-polirestaurante.j.aivencloud.com:26252/defaultdb?ssl-mode=REQUIRED"/>
+            <property name="jakarta.persistence.jdbc.user" value="avnadmin"/>
+            <property name="jakarta.persistence.jdbc.password" value="AVNS_V-atWthcTF5fFxg3qZB"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+</persistence>
