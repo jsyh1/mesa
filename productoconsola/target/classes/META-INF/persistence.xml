@@ -5,9 +5,9 @@
              https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
              version="3.1">
 
-    <persistence-unit name="productoPU">
+    <persistence-unit name="mesaPU">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		<class>productoconsola.model.Producto</class>
+        <class>productoconsola.model.Mesa</class>
         <properties>
             <property name="jakarta.persistence.jdbc.url"
                       value="jdbc:mysql://avnadmin:AVNS_V-atWthcTF5fFxg3qZB@polirestaurante-db-polirestaurante.j.aivencloud.com:26252/defaultdb?ssl-mode=REQUIRED"/>
