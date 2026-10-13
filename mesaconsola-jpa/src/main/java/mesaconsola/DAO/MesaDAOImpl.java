@@ -30,7 +30,7 @@ public class MesaDAOImpl implements MesaDAO {
     public List<Mesa> listar() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            return em.createQuery("SELECT m FROM Mesa m ORDER BY m.id", Mesa.class).getResultList();
+            return em.createQuery("SELECT m FROM Mesa m", Mesa.class).getResultList();
         } finally {
             em.close();
         }
