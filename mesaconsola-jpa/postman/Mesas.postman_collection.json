@@ -1,0 +1,106 @@
+{
+  "info": {
+    "name": "Mesa REST CRUD (JPA)",
+    "description": "Prueba de integración CRUD de Mesa compatible con la API mesaconsola-jdbc.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "mesaId", "value": "" },
+    { "key": "mesaNumero", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Crear mesa",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('mesaNumero', String(Date.now() % 1000000000));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 201 Created', function () { pm.response.to.have.status(201); });",
+              "const mesa = pm.response.json();",
+              "pm.test('Devuelve la mesa creada', function () { pm.expect(mesa.id).to.exist; pm.expect(mesa.numero).to.eql(Number(pm.collectionVariables.get('mesaNumero'))); pm.expect(mesa.estado).to.eql('LIBRE'); });",
+              "pm.collectionVariables.set('mesaId', mesa.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero\": {{mesaNumero}},\n  \"estado\": \"LIBRE\",\n  \"pedidoId\": null\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/mesas"
+      }
+    },
+    {
+      "name": "Listar mesas",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('Responde 200 OK', function () { pm.response.to.have.status(200); });",
+          "pm.test('La lista incluye la mesa creada', function () { pm.expect(pm.response.json().some(function (mesa) { return String(mesa.id) === pm.collectionVariables.get('mesaId'); })).to.eql(true); });"
+        ] }
+      }],
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/mesas" }
+    },
+    {
+      "name": "Consultar mesa",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('Responde 200 OK y devuelve la mesa solicitada', function () { pm.response.to.have.status(200); pm.expect(String(pm.response.json().id)).to.eql(pm.collectionVariables.get('mesaId')); });"
+        ] }
+      }],
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/mesas/{{mesaId}}" }
+    },
+    {
+      "name": "Actualizar mesa",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('Responde 200 OK con los datos actualizados', function () { pm.response.to.have.status(200); const mesa = pm.response.json(); pm.expect(mesa.estado).to.eql('OCUPADA'); pm.expect(mesa.numero).to.eql(Number(pm.collectionVariables.get('mesaNumero'))); });"
+        ] }
+      }],
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"numero\": {{mesaNumero}},\n  \"estado\": \"OCUPADA\",\n  \"pedidoId\": null\n}", "options": { "raw": { "language": "json" } } },
+        "url": "{{baseUrl}}/api/mesas/{{mesaId}}"
+      }
+    },
+    {
+      "name": "Eliminar mesa",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('Responde 204 No Content', function () { pm.response.to.have.status(204); });"
+        ] }
+      }],
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/api/mesas/{{mesaId}}" }
+    },
+    {
+      "name": "Comprobar mesa eliminada",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('Responde 404 Not Found', function () { pm.response.to.have.status(404); });"
+        ] }
+      }],
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/mesas/{{mesaId}}" }
+    }
+  ]
+}
