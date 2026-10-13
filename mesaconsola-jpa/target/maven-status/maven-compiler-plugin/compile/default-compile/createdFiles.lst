@@ -1,6 +1,0 @@
-mesaconsola/controller/MesaController.class
-mesaconsola/MesaRestApplication.class
-mesaconsola/DAO/MesaDAOImpl.class
-mesaconsola/DAO/MesaDAO.class
-mesaconsola/util/JPAUtil.class
-mesaconsola/model/Mesa.class
